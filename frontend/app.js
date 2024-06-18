@@ -119,6 +119,18 @@ function displayOutput(output) {
 
     tableHTML += '</tbody></table>';
     outputElement.innerHTML = tableHTML;
+
+    // Append additional metrics
+    const avgWaitingTime = rows[rows.length - 3].split(': ')[1];
+    const avgTurnaroundTime = rows[rows.length - 2].split(': ')[1];
+    const cpuUtilization = rows[rows.length - 1].split(': ')[1];
+
+    const metricsHTML = `
+        <p>Average Waiting Time: ${avgWaitingTime}</p>
+        <p>Average Turnaround Time: ${avgTurnaroundTime}</p>
+        <p>CPU Utilization: ${cpuUtilization}</p>
+    `;
+    outputElement.insertAdjacentHTML('beforeend', metricsHTML);
 }
 
 function resetForm() {

@@ -2,7 +2,8 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
-#include<queue>
+#include <iomanip>
+#include <queue>
 
 using namespace std;
 
@@ -81,9 +82,6 @@ void shortestJobFirst(vector<Process>& processes, int contextSwitchTime, vector<
         return a.burstTime < b.burstTime || (a.burstTime == b.burstTime && a.arrivalTime < b.arrivalTime);
     });
 
-    int totalWaitingTime = 0;
-    int totalTurnaroundTime = 0;
-
     finishTime[0] = processes[0].arrivalTime + processes[0].burstTime;
     turnAroundTime[0] = finishTime[0] - processes[0].arrivalTime;
     waitingTime[0] = turnAroundTime[0] - processes[0].burstTime;
@@ -95,17 +93,6 @@ void shortestJobFirst(vector<Process>& processes, int contextSwitchTime, vector<
         waitingTime[i] = turnAroundTime[i] - processes[i].burstTime;
         responseTime[i] = waitingTime[i];
     }
-
-    for (size_t i = 0; i < processes.size(); ++i) {
-        totalWaitingTime += waitingTime[i];
-        totalTurnaroundTime += turnAroundTime[i];
-    }
-
-    float avgWaitingTime = (float)totalWaitingTime / processes.size();
-    float avgTurnaroundTime = (float)totalTurnaroundTime / processes.size();
-
-    cout << "Average Waiting Time: " << avgWaitingTime << endl;
-    cout << "Average Turnaround Time: " << avgTurnaroundTime << endl;
 }
 
 void shortestRemainingTime(vector<Process>& processes, int contextSwitchTime, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime, vector<int>& responseTime) {

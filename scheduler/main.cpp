@@ -2,7 +2,7 @@
 #include "parser.h"
 #include <iostream>
 #include <vector>
-#include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -54,6 +54,22 @@ int main(int argc, char* argv[]) {
     }
 
     printResults(processes, finishTime, turnAroundTime, waitingTime, responseTime);
+
+    int totalWaitingTime = 0, totalTurnaroundTime = 0, totalBurstTime = 0;
+    for (size_t i = 0; i < processes.size(); ++i) {
+        totalWaitingTime += waitingTime[i];
+        totalTurnaroundTime += turnAroundTime[i];
+        totalBurstTime += processes[i].burstTime;
+    }
+
+    float avgWaitingTime = (float)totalWaitingTime / processes.size();
+    float avgTurnaroundTime = (float)totalTurnaroundTime / processes.size();
+    int totalTime = finishTime[processes.size() - 1];
+    float cpuUtilization = 100.0 * totalBurstTime / totalTime;
+
+    cout << "Average Waiting Time: " << fixed << setprecision(2) << avgWaitingTime << endl;
+    cout << "Average Turnaround Time: " << fixed << setprecision(2) << avgTurnaroundTime << endl;
+    cout << "CPU Utilization: " << fixed << setprecision(2) << cpuUtilization << "%" << endl;
 
     return 0;
 }
