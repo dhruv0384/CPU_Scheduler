@@ -14,23 +14,28 @@ def run_scheduler():
     algorithm = data['algorithm']
     context_switch_time = data['contextSwitchTime']
     processes = data['processes']
-    
+    time_quantum = data.get('timeQuantum', '')  # Get time quantum if present
+
     input_data = f"{len(processes)}\n"
     for process in processes:
-        input_data += f"{process['name']} {process['arrivalTime']} {process['burstTime']}\n"
-    
+        input_data += f"{process['name']} {process['arrivalTime']} {process['burstTime']} {process.get('priority', 0)}\n"
+
     # Print input data for debugging
     print("Input Data:", input_data)
-    
+
     # Save input data to the scheduler directory
     input_file = os.path.join(SCHEDULER_DIR, 'input.txt')
     with open(input_file, 'w') as f:
         f.write(input_data)
-    
-    # Execute the C++ scheduler from the scheduler directory
-    command = f"{os.path.join(SCHEDULER_DIR, 'scheduler')} {algorithm} {context_switch_time} < {input_file}"
+
+    # Prepare the command with optional time quantum
+    command = f"{os.path.join(SCHEDULER_DIR, 'scheduler')} {algorithm} {context_switch_time}"
+    if algorithm == '2':  # If Round Robin, add time quantum
+        command += f" {time_quantum}"
+    command += f" < {input_file}"
+
     result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=SCHEDULER_DIR)
-    
+
     # Read the output from the C++ program
     output = result.stdout
     print("Scheduler Output:", output)  # Print the output for debugging

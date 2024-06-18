@@ -1,4 +1,5 @@
 document.getElementById('numProcesses').addEventListener('input', createProcessInputs);
+document.getElementById('algorithm').addEventListener('change', toggleQuantumInput);
 document.getElementById('run').addEventListener('click', runScheduler);
 document.getElementById('reset').addEventListener('click', resetForm);
 
@@ -8,6 +9,7 @@ createProcessInputs();
 function createProcessInputs() {
     const numProcesses = document.getElementById('numProcesses').value;
     const processInputs = document.getElementById('processInputs');
+    const algorithm = document.getElementById('algorithm').value;
     processInputs.innerHTML = '';
 
     for (let i = 0; i < numProcesses; i++) {
@@ -32,8 +34,28 @@ function createProcessInputs() {
         burstInput.className = 'burstTime';
         div.appendChild(burstInput);
 
+        if (algorithm == '5') { // Priority Scheduling
+            const priorityInput = document.createElement('input');
+            priorityInput.type = 'number';
+            priorityInput.placeholder = 'Priority';
+            priorityInput.required = true;
+            priorityInput.className = 'priority';
+            div.appendChild(priorityInput);
+        }
+
         processInputs.appendChild(div);
     }
+}
+
+function toggleQuantumInput() {
+    const algorithm = document.getElementById('algorithm').value;
+    const quantumGroup = document.getElementById('quantumGroup');
+    if (algorithm == '2') { // Round Robin
+        quantumGroup.style.display = 'block';
+    } else {
+        quantumGroup.style.display = 'none';
+    }
+    createProcessInputs(); // Refresh process inputs based on the algorithm selected
 }
 
 async function runScheduler() {
@@ -41,20 +63,23 @@ async function runScheduler() {
     const contextSwitchTime = document.getElementById('contextSwitchTime').value;
     const numProcesses = document.getElementById('numProcesses').value;
     const processInputs = document.querySelectorAll('#processInputs .form-group');
+    const timeQuantum = document.getElementById('timeQuantum').value;
 
     const processes = [];
     processInputs.forEach((inputGroup, index) => {
         const name = `P${index + 1}`;
         const arrivalTime = inputGroup.querySelector('.arrivalTime').value;
         const burstTime = inputGroup.querySelector('.burstTime').value;
-        processes.push({ name, arrivalTime, burstTime });
+        const priorityInput = inputGroup.querySelector('.priority');
+        const priority = priorityInput ? priorityInput.value : 0;
+        processes.push({ name, arrivalTime, burstTime, priority });
     });
 
     try {
         const response = await fetch('http://127.0.0.1:5000/run_scheduler', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ algorithm, contextSwitchTime, processes })
+            body: JSON.stringify({ algorithm, contextSwitchTime, processes, timeQuantum })
         });
 
         if (response.ok) {

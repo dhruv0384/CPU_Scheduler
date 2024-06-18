@@ -4,6 +4,6 @@
 #include "scheduler.h"
 #include <vector>
 
-void parseInput(vector<Process>& processes);
+void parseInput(std::vector<Process>& processes);
 
 #endif // PARSER_H
