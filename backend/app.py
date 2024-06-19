@@ -32,7 +32,10 @@ def run_scheduler():
     }
     
     results = {}
-    
+    best_algorithm = None
+    best_avg_waiting_time = float('inf')
+    best_avg_turnaround_time = float('inf')
+
     for name, alg in algorithms.items():
         command = f"{os.path.join(SCHEDULER_DIR, 'scheduler')} {alg} {context_switch_time} < {input_file}"
         result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=SCHEDULER_DIR)
@@ -43,10 +46,23 @@ def run_scheduler():
         else:
             headers = []
             rows = []
+        
+        avg_waiting_time = float(rows[-3][0].split(': ')[1])
+        avg_turnaround_time = float(rows[-2][0].split(': ')[1])
+
         results[name] = {
             'headers': headers,
-            'rows': rows
+            'rows': rows,
+            'avg_waiting_time': avg_waiting_time,
+            'avg_turnaround_time': avg_turnaround_time
         }
+
+        if avg_waiting_time < best_avg_waiting_time or (avg_waiting_time == best_avg_waiting_time and avg_turnaround_time < best_avg_turnaround_time):
+            best_algorithm = name
+            best_avg_waiting_time = avg_waiting_time
+            best_avg_turnaround_time = avg_turnaround_time
+
+    results['best_algorithm'] = best_algorithm
 
     print("Results:", results)  # Add this line for debugging
 

@@ -83,7 +83,11 @@ function displayOutput(data) {
     const outputElement = document.getElementById('output');
     outputElement.innerHTML = ''; // Clear previous output
 
+    const bestAlgorithm = data.best_algorithm;
+    outputElement.insertAdjacentHTML('beforeend', `<h2>The most efficient algorithm is: ${bestAlgorithm}</h2>`);
+
     for (const [algorithm, result] of Object.entries(data)) {
+        if (algorithm === 'best_algorithm') continue;
         if (!result || !result.rows || !result.headers) {
             console.error(`Missing data for algorithm ${algorithm}`, result);
             continue;
@@ -118,6 +122,7 @@ function displayOutput(data) {
 
 function generateCharts(data) {
     for (const [algorithm, result] of Object.entries(data)) {
+        if (algorithm === 'best_algorithm') continue;
         if (!result.rows) continue;
 
         const processNames = [];
