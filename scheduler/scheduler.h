@@ -19,9 +19,9 @@ struct Process {
     }
 };
 
-void firstComeFirstServe(vector<Process>& processes, int contextSwitchTime, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime);
-void shortestJobFirst(vector<Process>& processes, int contextSwitchTime, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime);
-void shortestRemainingTime(vector<Process>& processes, int contextSwitchTime, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime);
-void priorityScheduling(vector<Process>& processes, int contextSwitchTime, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime);
+void firstComeFirstServe(vector<Process>& processes, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime);
+void shortestJobFirst(vector<Process>& processes, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime);
+void shortestRemainingTime(vector<Process>& processes, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime);
+void priorityScheduling(vector<Process>& processes, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime);
 
 #endif // SCHEDULER_H

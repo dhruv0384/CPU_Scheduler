@@ -14,13 +14,12 @@ void printResults(const vector<Process>& processes, const vector<int>& finishTim
 }
 
 int main(int argc, char* argv[]) {
-    if (argc < 3) {
-        cerr << "Usage: " << argv[0] << " <algorithm> <context_switch_time>\n";
+    if (argc < 2) {
+        cerr << "Usage: " << argv[0] << " <algorithm>\n";
         return 1;
     }
 
     int algorithmChoice = stoi(argv[1]);
-    int contextSwitchTime = stoi(argv[2]);
 
     vector<Process> processes;
     parseInput(processes);
@@ -29,16 +28,16 @@ int main(int argc, char* argv[]) {
 
     switch (algorithmChoice) {
         case 1:
-            firstComeFirstServe(processes, contextSwitchTime, finishTime, turnAroundTime, waitingTime);
+            firstComeFirstServe(processes, finishTime, turnAroundTime, waitingTime);
             break;
         case 3:
-            shortestJobFirst(processes, contextSwitchTime, finishTime, turnAroundTime, waitingTime);
+            shortestJobFirst(processes, finishTime, turnAroundTime, waitingTime);
             break;
         case 4:
-            shortestRemainingTime(processes, contextSwitchTime, finishTime, turnAroundTime, waitingTime);
+            shortestRemainingTime(processes, finishTime, turnAroundTime, waitingTime);
             break;
         case 5:
-            priorityScheduling(processes, contextSwitchTime, finishTime, turnAroundTime, waitingTime);
+            priorityScheduling(processes, finishTime, turnAroundTime, waitingTime);
             break;
         default:
             cerr << "Invalid algorithm choice\n";
@@ -47,17 +46,16 @@ int main(int argc, char* argv[]) {
 
     printResults(processes, finishTime, turnAroundTime, waitingTime);
 
-    int totalWaitingTime = 0, totalTurnaroundTime = 0, totalBurstTime = 0, totalTime=0;
+    int totalWaitingTime = 0, totalTurnaroundTime = 0, totalBurstTime = 0, totalTime = 0;
     for (size_t i = 0; i < processes.size(); ++i) {
         totalWaitingTime += waitingTime[i];
         totalTurnaroundTime += turnAroundTime[i];
         totalBurstTime += processes[i].burstTime;
-        totalTime = max(totalTime,finishTime[i]);
+        totalTime = max(totalTime, finishTime[i]);
     }
 
     float avgWaitingTime = (float)totalWaitingTime / processes.size();
     float avgTurnaroundTime = (float)totalTurnaroundTime / processes.size();
-    // int totalTime = finishTime[processes.size() - 1];
     float cpuUtilization = 100.0 * totalBurstTime / totalTime;
 
     cout << "Average Waiting Time: " << fixed << setprecision(2) << avgWaitingTime << endl;

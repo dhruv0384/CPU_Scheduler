@@ -7,7 +7,7 @@
 using namespace std;
 
 // First Come First Serve
-void firstComeFirstServe(vector<Process>& processes, int contextSwitchTime, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime) {
+void firstComeFirstServe(vector<Process>& processes, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime) {
     sort(processes.begin(), processes.end(), [](const Process& a, const Process& b) {
         return a.arrivalTime < b.arrivalTime;
     });
@@ -26,13 +26,11 @@ void firstComeFirstServe(vector<Process>& processes, int contextSwitchTime, vect
         finishTime[processIndex] = time;
         turnAroundTime[processIndex] = finishTime[processIndex] - arrivalTime;
         waitingTime[processIndex] = turnAroundTime[processIndex] - burstTime;
-
-        time += contextSwitchTime;
     }
 }
 
 // Shortest Job First (SJF)
-void shortestJobFirst(vector<Process>& processes, int contextSwitchTime, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime) {
+void shortestJobFirst(vector<Process>& processes, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime) {
     sort(processes.begin(), processes.end(), [](const Process& a, const Process& b) {
         return a.arrivalTime < b.arrivalTime;
     });
@@ -60,13 +58,11 @@ void shortestJobFirst(vector<Process>& processes, int contextSwitchTime, vector<
         finishTime[processIndex] = time;
         turnAroundTime[processIndex] = finishTime[processIndex] - processes[processIndex].arrivalTime;
         waitingTime[processIndex] = turnAroundTime[processIndex] - burstTime;
-
-        time += contextSwitchTime;
     }
 }
 
 // Shortest Remaining Time First (SRTF)
-void shortestRemainingTime(vector<Process>& processes, int contextSwitchTime, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime) {
+void shortestRemainingTime(vector<Process>& processes, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime) {
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
     vector<int> remainingTime(processes.size());
     for (size_t i = 0; i < processes.size(); ++i) {
@@ -99,15 +95,14 @@ void shortestRemainingTime(vector<Process>& processes, int contextSwitchTime, ve
             turnAroundTime[processIndex] = finishTime[processIndex] - processes[processIndex].arrivalTime;
             waitingTime[processIndex] = turnAroundTime[processIndex] - processes[processIndex].burstTime;
         }
-        while(!pq.empty()){
+        while (!pq.empty()) {
             pq.pop();
         }
-        time += contextSwitchTime;
     }
 }
 
 // Priority Scheduling
-void priorityScheduling(vector<Process>& processes, int contextSwitchTime, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime) {
+void priorityScheduling(vector<Process>& processes, vector<int>& finishTime, vector<int>& turnAroundTime, vector<int>& waitingTime) {
     sort(processes.begin(), processes.end(), [](const Process& a, const Process& b) {
         return a.arrivalTime < b.arrivalTime;
     });
@@ -135,7 +130,5 @@ void priorityScheduling(vector<Process>& processes, int contextSwitchTime, vecto
         finishTime[processIndex] = time;
         turnAroundTime[processIndex] = finishTime[processIndex] - processes[processIndex].arrivalTime;
         waitingTime[processIndex] = turnAroundTime[processIndex] - burstTime;
-
-        time += contextSwitchTime;
     }
 }

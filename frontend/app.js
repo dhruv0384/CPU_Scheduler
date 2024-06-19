@@ -43,7 +43,6 @@ function createProcessInputs() {
 }
 
 async function runScheduler() {
-    const contextSwitchTime = document.getElementById('contextSwitchTime').value;
     const numProcesses = document.getElementById('numProcesses').value;
     const processInputs = document.querySelectorAll('#processInputs .form-group');
 
@@ -60,7 +59,7 @@ async function runScheduler() {
         const response = await fetch('http://127.0.0.1:5000/run_scheduler', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contextSwitchTime, processes })
+            body: JSON.stringify({ processes })
         });
 
         if (response.ok) {
@@ -192,9 +191,9 @@ function generateCharts(data) {
 
 function resetForm() {
     document.getElementById('numProcesses').value = '1';
-    document.getElementById('contextSwitchTime').value = '0';
     document.getElementById('processInputs').innerHTML = '';
     document.getElementById('output').innerHTML = '';
+    document.getElementById('ganttChart').innerHTML = '';
     createProcessInputs();  // Reset process inputs as well
 }
 
