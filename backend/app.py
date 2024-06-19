@@ -11,7 +11,6 @@ SCHEDULER_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../sch
 @app.route('/run_scheduler', methods=['POST'])
 def run_scheduler():
     data = request.json
-    context_switch_time = data['contextSwitchTime']
     processes = data['processes']
 
     input_data = f"{len(processes)}\n"
@@ -37,7 +36,7 @@ def run_scheduler():
     best_avg_turnaround_time = float('inf')
 
     for name, alg in algorithms.items():
-        command = f"{os.path.join(SCHEDULER_DIR, 'scheduler')} {alg} {context_switch_time} < {input_file}"
+        command = f"{os.path.join(SCHEDULER_DIR, 'scheduler')} {alg} < {input_file}"
         result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=SCHEDULER_DIR)
         output = result.stdout.strip().split('\n')
         if len(output) > 0:
