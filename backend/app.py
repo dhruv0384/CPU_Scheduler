@@ -11,36 +11,46 @@ SCHEDULER_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../sch
 @app.route('/run_scheduler', methods=['POST'])
 def run_scheduler():
     data = request.json
-    algorithm = data['algorithm']
     context_switch_time = data['contextSwitchTime']
     processes = data['processes']
-    time_quantum = data.get('timeQuantum', '')  # Get time quantum if present
 
     input_data = f"{len(processes)}\n"
     for process in processes:
         input_data += f"{process['name']} {process['arrivalTime']} {process['burstTime']} {process.get('priority', 0)}\n"
 
-    # Print input data for debugging
     print("Input Data:", input_data)
 
-    # Save input data to the scheduler directory
     input_file = os.path.join(SCHEDULER_DIR, 'input.txt')
     with open(input_file, 'w') as f:
         f.write(input_data)
 
-    # Prepare the command with optional time quantum
-    command = f"{os.path.join(SCHEDULER_DIR, 'scheduler')} {algorithm} {context_switch_time}"
-    if algorithm == '2':  # If Round Robin, add time quantum
-        command += f" {time_quantum}"
-    command += f" < {input_file}"
+    algorithms = {
+        'FCFS': '1',
+        'SJF': '3',
+        'SRTF': '4',
+        'Priority': '5'
+    }
+    
+    results = {}
+    
+    for name, alg in algorithms.items():
+        command = f"{os.path.join(SCHEDULER_DIR, 'scheduler')} {alg} {context_switch_time} < {input_file}"
+        result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=SCHEDULER_DIR)
+        output = result.stdout.strip().split('\n')
+        if len(output) > 0:
+            headers = output[0].split(' | ')
+            rows = [row.split(' | ') for row in output[1:]]
+        else:
+            headers = []
+            rows = []
+        results[name] = {
+            'headers': headers,
+            'rows': rows
+        }
 
-    result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=SCHEDULER_DIR)
+    print("Results:", results)  # Add this line for debugging
 
-    # Read the output from the C++ program
-    output = result.stdout
-    print("Scheduler Output:", output)  # Print the output for debugging
-
-    return jsonify({'output': output})
+    return jsonify(results)
 
 if __name__ == '__main__':
     app.run(debug=True)
