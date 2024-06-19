@@ -47,8 +47,12 @@ def run_scheduler():
             headers = []
             rows = []
         
-        avg_waiting_time = float(rows[-3][0].split(': ')[1])
-        avg_turnaround_time = float(rows[-2][0].split(': ')[1])
+        if rows:
+            avg_waiting_time = float(rows[-3][0].split(': ')[1])
+            avg_turnaround_time = float(rows[-2][0].split(': ')[1])
+        else:
+            avg_waiting_time = float('inf')
+            avg_turnaround_time = float('inf')
 
         results[name] = {
             'headers': headers,

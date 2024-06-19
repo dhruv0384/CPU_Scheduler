@@ -130,9 +130,11 @@ function generateCharts(data) {
         const turnaroundTimes = [];
 
         result.rows.forEach(row => {
-            processNames.push(row[0] ? row[0].trim() : '');
-            turnaroundTimes.push(parseFloat(row[4] ? row[4].trim() : 0)); // Correct index for turnaround time
-            waitingTimes.push(parseFloat(row[5] ? row[5].trim() : 0)); // Correct index for waiting time
+            if (row.length >= 6) {
+                processNames.push(row[0] ? row[0].trim() : '');
+                turnaroundTimes.push(parseFloat(row[4] ? row[4].trim() : 0)); // Correct index for turnaround time
+                waitingTimes.push(parseFloat(row[5] ? row[5].trim() : 0)); // Correct index for waiting time
+            }
         });
 
         const waitingTimeCtx = document.getElementById(`${algorithm}WaitingTimeChart`).getContext('2d');
