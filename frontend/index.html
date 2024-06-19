@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CPU Scheduler</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Add Chart.js library -->
 </head>
 <body>
     <div class="container">
@@ -13,17 +14,13 @@
             <label for="algorithm">Select Scheduling Algorithm:</label>
             <select id="algorithm">
                 <option value="1">FCFS</option>
-                <option value="2">Round Robin</option>
                 <option value="3">SJF</option>
                 <option value="4">SRTF</option>
                 <option value="5">Priority Scheduling</option>
-                <!-- Other options... -->
+                <!-- Removed Round Robin option -->
             </select>
         </div>
-        <div class="form-group" id="quantumGroup" style="display:none;">
-            <label for="timeQuantum">Time Quantum:</label>
-            <input type="number" id="timeQuantum" min="1">
-        </div>
+        <!-- Removed time quantum input group -->
         <div class="form-group">
             <label for="numProcesses">Number of Processes:</label>
             <input type="number" id="numProcesses" min="1" value="1">
@@ -36,6 +33,8 @@
         <button id="run">Run</button>
         <button id="reset">Reset</button>
         <div id="output"></div>
+        <canvas id="waitingTimeChart" width="400" height="400"></canvas> <!-- Add canvas for waiting time chart -->
+        <canvas id="turnaroundTimeChart" width="400" height="400"></canvas> <!-- Add canvas for turnaround time chart -->
     </div>
     <script src="app.js"></script>
 </body>
