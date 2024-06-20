@@ -117,6 +117,13 @@ The CPU Scheduler project aims to simulate various CPU scheduling algorithms, al
 * **[C++ Documentation and Tutorials](https://en.cppreference.com/w/):** For implementing the core scheduling algorithms.
 * **[Stack Overflow](https://stackoverflow.com/) and [GitHub](https://github.com/):** For troubleshooting and finding community-driven solutions to common problems.
 
+  ## Screenshots
+  ![alt text](images/01.png)
+  ![alt text](images/02.png)
+  ![alt text](images/03.png)
+  ![alt text](images/04.png)
+  ![alt text](images/05.png)
+
 
 
 
