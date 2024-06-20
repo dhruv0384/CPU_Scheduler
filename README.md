@@ -19,8 +19,8 @@ This project is an advanced CPU scheduling simulator that implements and compare
 
 #### Clone the repository:
 ```bash
-git clone <repository_url>
-cd ACM_CPU_Scheduler
+git clone https://github.com/dhruv0384/CPU_Scheduler.git
+cd CPU_Scheduler
 ```
 
 ### Compile the C++ Scheduler
