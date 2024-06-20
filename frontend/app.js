@@ -47,13 +47,28 @@ async function runScheduler() {
     const processInputs = document.querySelectorAll('#processInputs .form-group');
 
     const processes = [];
+    let valid = true;
+
     processInputs.forEach((inputGroup, index) => {
         const name = `P${index + 1}`;
         const arrivalTime = inputGroup.querySelector('.arrivalTime').value;
         const burstTime = inputGroup.querySelector('.burstTime').value;
         const priority = inputGroup.querySelector('.priority').value;
+
+        if (!arrivalTime || !burstTime || (priority === '')) {
+            valid = false;
+            inputGroup.classList.add('error');
+        } else {
+            inputGroup.classList.remove('error');
+        }
+
         processes.push({ name, arrivalTime, burstTime, priority });
     });
+
+    if (!valid) {
+        alert('Please fill in all the fields.');
+        return;
+    }
 
     try {
         const response = await fetch('http://127.0.0.1:5000/run_scheduler', {
